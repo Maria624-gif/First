@@ -1,0 +1,263 @@
+package Queue;
+//Задание №1
+//Разработать реализацию класса къюю, в которой используется кольцевой связанный список.
+// Разработать циклическую очередь на базе связанного списка.
+// В классах должны поддерживаться + - и итерация и абстрактный тип данных
+import java.io.*;
+import java.util.*;
+public class Queue {
+
+    Node head;
+
+    static class Node {
+
+        int data;
+
+        Node next;
+
+        Node(int d)
+
+        {
+
+            data = d;
+            next = null;
+
+        }
+
+    }
+
+    public static Queue insert(Queue list, int data)
+
+    {
+        Node new_node = new Node(data);
+
+        new_node.next = null;
+
+
+        if (list.head == null) {
+
+            list.head = new_node;
+
+        }
+
+        else {
+
+            Node last = list.head;
+
+            while (last.next != null) {
+
+                last = last.next;
+
+            }
+
+            last.next = new_node;
+
+        }
+
+        return list;
+
+    }
+
+    public static void printList(Queue list)
+
+    {
+        Node currNode = list.head;
+
+        System.out.print("\nQueue: ");
+
+        while (currNode != null) {
+
+
+
+            System.out.print(currNode.data + " ");
+
+            currNode = currNode.next;
+
+        }
+
+        System.out.println("\n");
+
+    }
+
+    public static Queue deleteByKey(Queue list, int key)
+
+    {
+        Node currNode = list.head, prev = null;
+
+        if (currNode != null && currNode.data == key) {
+
+            list.head = currNode.next;
+
+            System.out.println(key + " найден и удален");
+
+            return list;
+
+        }
+
+        while (currNode != null && currNode.data != key) {
+
+
+            prev = currNode;
+
+            currNode = currNode.next;
+
+        }
+
+        if (currNode != null) {
+
+            prev.next = currNode.next;
+
+
+            System.out.println(key + " найден и удален");
+
+        }
+
+        if (currNode == null) {
+
+
+            System.out.println(key + " не найден");
+
+        }
+
+
+        return list;
+
+    }
+
+    public static Queue deleteAtPosition(Queue list, int index)
+
+    {
+        Node currNode = list.head, prev = null;
+
+
+        if (index == 0 && currNode != null) {
+
+            list.head = currNode.next;
+
+
+            System.out.println(index + " позиция, элемент удален");
+
+            return list;
+
+        }
+
+        int counter = 0;
+
+
+        while (currNode != null) {
+
+
+            if (counter == index) {
+
+                prev.next = currNode.next;
+
+
+                System.out.println(index + " позиция, элемент удален");
+
+                break;
+
+            }
+
+            else {
+
+
+                prev = currNode;
+
+                currNode = currNode.next;
+
+                counter++;
+
+            }
+
+        }
+
+        if (currNode == null) {
+
+
+            System.out.println(index + " позиция, элемент не найден");
+
+        }
+        return list;
+
+    }
+
+    public static void main(String[] args)
+
+    {
+
+
+        Queue list = new Queue();
+
+
+
+        String command;
+        int element;
+
+        System.out.println("Односвязный список создан, выберите дальнейшее действие и нажмите enter:");
+        System.out.println("");
+        System.out.println("push : вставить элемент с определенным значением в список");
+        System.out.println("pop : исключить элемент с определенным значением из списка");
+        System.out.println("delete : удалить элемент из списка с определенной позиции");
+        System.out.println("print : вывести на экран содержимое списка");
+        System.out.println("");
+
+        Scanner scan = new Scanner(System.in);
+
+        boolean b = true;
+
+
+        while (b)
+
+
+        {
+
+
+            command = scan.nextLine();
+
+
+            if (command.equals("push"))
+            {
+                System.out.println("Задайте значение элемента, помещаемого в список");
+
+                element = scan.nextInt();
+                list = insert(list, element);
+                System.out.println("Элемент " + Integer.toString(element) + " помещен в список");
+            }
+
+
+            if (command.equals("pop"))
+            {
+                System.out.println("Задайте значение элемента, исключаемого из списка");
+
+                element = scan.nextInt();
+                deleteByKey(list, element);
+                // System.out.println("Элемент " + Integer.toString(element) + " исключен из списка");
+            }
+
+
+            if (command.equals("delete"))
+            {
+                System.out.println("Задайте позицию, с которой вы хотите удалить элемент (начиная с нуля)");
+                element = scan.nextInt();
+                deleteAtPosition(list, element);
+                // System.out.println("Элемент с позиции " + Integer.toString(element) + " исключен из списка");
+            }
+
+
+            if (command.equals("print"))
+            {
+                System.out.println("Ваш список выглядит следующим образом:");
+
+                printList(list);
+            }
+
+
+            System.out.println("");
+
+        }
+
+
+
+    }
+
+}
