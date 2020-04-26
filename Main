@@ -1,0 +1,87 @@
+package Main;
+//Задание №3
+//Найти медиану числового ряда. Вводить числа, пока пользователь сам не остановит процесс
+import java.util.*;
+
+public class Main
+
+{ public static double findMean(int a[], int n)
+
+    {
+
+        int sum = 0;
+
+        for (int i = 0; i < n; i++)
+
+            sum += a[i];
+
+
+
+        return (double)sum / (double)n;
+
+    }
+
+    public static double findMedian(int a[], int n)
+
+    {
+        Arrays.sort(a);
+
+        if (n % 2 != 0)
+
+            return (double)a[n / 2];
+
+        return (double)(a[(n - 1) / 2] + a[n / 2]) / 2.0;
+
+    }
+
+    public static void main(String args[])
+
+    {
+
+
+        int[] arr1 = new int[1000];
+        Scanner scan = new Scanner(System.in);
+        int input;
+        String command;
+        String exit = "end";
+        int i = 0;
+        boolean b = true;
+
+        System.out.println("Вводите числа массива, после каждого наживая клавишу enter");
+        System.out.println("В случае окончания ввода, введите команду end");
+
+        while (b)
+        {
+
+            command = scan.nextLine();
+            if (command.equals(exit))    {b=false;} else {
+
+
+                input = Integer.valueOf(command);
+                arr1[i] = input;
+                ++i;
+
+            }
+
+
+        }
+
+        scan.close();
+
+        int[] arr = new int[i];
+
+        for(int k=0;k<i;k++){
+            arr[k]=arr1[k];
+        }
+
+
+        System.out.println("Среднее = " + findMean(arr, i));
+
+        System.out.println("Медиана = " + findMedian(arr, i));
+
+    }
+
+}
+
+
+
