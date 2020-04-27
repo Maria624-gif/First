@@ -1,0 +1,142 @@
+package BST;
+//Задание №5
+//Дано дерево бинарного поиска. Преобразуйте его в двоичную кучу с минимальным элементом в корне,
+// содержащую те же элементы за O(n) времени.
+// Сделайте это «по месту», не заводя новой структуры данных
+import java.util.*;
+public class BST
+{
+    static class Node
+    {
+        int data;
+        Node left, right;
+    };
+
+    static Node newNode(int data)
+    {
+        Node node = new Node();
+        node.data = data;
+        node.left = node.right = null;
+        return node;
+    }
+
+    static void printLevelOrder(Node root)
+    {
+
+        if (root == null) return;
+
+        Queue<Node> q = new LinkedList<>();
+        q.add(root);
+
+        while (q.size() > 0)
+        {
+            int nodeCount = q.size();
+            while (nodeCount > 0)
+            {
+                Node node = q.peek();
+                System.out.print( node.data + " ");
+                q.remove();
+                if (node.left != null)
+                    q.add(node.left);
+                if (node.right != null)
+                    q.add(node.right);
+                nodeCount--;
+            }
+            System.out.println();
+        }
+    }
+
+    static Node BSTToSortedLL(Node root, Node head_ref)
+    {
+
+        if(root == null)
+            return head_ref;
+
+        head_ref = BSTToSortedLL(root.right, head_ref);
+
+
+        root.right = head_ref;
+
+        if (head_ref != null)
+            (head_ref).left = null;
+
+        head_ref = root;
+
+
+        head_ref = BSTToSortedLL(root.left, head_ref);
+        return head_ref;
+    }
+
+    static Node SortedLLToMinHeap(Node root, Node head)
+    {
+
+        if (head == null)
+            return null;
+
+        Queue<Node > q = new LinkedList<>();
+
+        root = head;
+
+        head = head.right;
+
+        root.right = null;
+
+        q.add(root);
+
+        while (head != null)
+        {
+            Node parent = q.peek();
+            q.remove();
+
+            Node leftChild = head;
+            head = head.right;
+            leftChild.right = null;
+            q.add(leftChild);
+
+
+            parent.left = leftChild;
+
+            if (head != null)
+            {
+                Node rightChild = head;
+                head = head.right;
+                rightChild.right = null;
+                q.add(rightChild);
+
+                parent.right = rightChild;
+            }
+        }
+        return root;
+    }
+
+    static Node BSTToMinHeap(Node root)
+    {
+        Node head = null;
+
+        head = BSTToSortedLL(root, head);
+
+        root = null;
+
+        root = SortedLLToMinHeap(root, head);
+        return root;
+    }
+
+    public static void main(String args[])
+    {
+
+
+        Node root = newNode(13);
+        root.left = newNode(9);
+        root.right = newNode(17);
+        root.right.left = newNode(15);
+        root.right.right = newNode(19);
+        root.left.left = newNode(7);
+        root.left.right = newNode(11);
+        root.left.left.left = newNode(6);
+
+        root = BSTToMinHeap(root);
+
+        printLevelOrder(root);
+    }
+}
+
